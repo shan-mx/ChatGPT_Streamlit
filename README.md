@@ -2,10 +2,12 @@
 A ChatGPT web client implementation based on streamlit.
 
 ## Usage
-### Create ./.streamlit/secrets.toml and type
+### 1. Set up API Key
+Create ./.streamlit/secrets.toml and type
 `
 api_key = "YOUR_OPENAI_API_KEY"
 `
+or edit GUI -> Settings -> API Key
 
 ### 2. Run the streamlit GUI
 ```bash
