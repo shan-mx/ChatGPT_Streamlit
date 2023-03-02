@@ -1,24 +1,21 @@
 import json
 
 
-def save_data(history, stats, user):
+def save_data(history: list, stats: dict, user: str):
     with open(f"chat_data{user}.json", 'w', encoding='utf-8') as f:
         json.dump({"chat_history": history, "chat_stats": stats}, f)
 
 
-def load_data(use_history, user, initial_content):
-    if use_history:
-        try:
-            with open(f"chat_data{user}.json", 'r', encoding='utf-8') as f:
-                data = json.load(f)
-                return data
-        except FileNotFoundError:
-            return {"chat_history": [{"role": "system", "content": initial_content}], "chat_stats": initial_stats}
-    else:
+def load_data(user: str, initial_content: str) -> dict:
+    try:
+        with open(f"chat_data{user}.json", 'r', encoding='utf-8') as f:
+            data = json.load(f)
+            return data
+    except FileNotFoundError:
         return {"chat_history": [{"role": "system", "content": initial_content}], "chat_stats": initial_stats}
 
 
-def show_messages(user, messages):
+def show_messages(user: str, messages: list) -> str:
     md_str = ""
     for i in range(len(messages)):
         each = messages[i]

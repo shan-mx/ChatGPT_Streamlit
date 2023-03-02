@@ -9,13 +9,13 @@ st.title('GPT Chatter')
 
 tab1, tab2, tab3 = st.tabs(["Chat", "Settings", "Statistics"])
 initial_content = tab2.text_input("Initial Instruction", "")
-use_history = True
 user = tab2.text_input("Username", value="User")
 if tab2.button("Clear Chat History"):
-    st.session_state['data'] = load_data(False, user, initial_content)
+    st.session_state['data']["chat_history"] = [{"role": "system", "content": initial_content}]
+    st.session_state['data']["chat_stats"] = initial_stats
     save_data(st.session_state['data']["chat_history"], st.session_state['data']["chat_stats"], user)
 if user or initial_content or 'data' not in st.session_state:
-    st.session_state['data'] = load_data(use_history, user, initial_content)
+    st.session_state['data'] = load_data(user, initial_content)
 
 chat_stats = st.session_state['data']["chat_stats"]
 chat_history = st.session_state['data']["chat_history"]
@@ -25,6 +25,7 @@ col1.metric("Averaged Time:", chat_stats["Averaged Time"])
 col2.metric("Tokens Used:", chat_stats["Tokens Used"])
 col2.metric("Total Tokens:", chat_stats["Total Tokens"])
 col3.metric("Total Rounds:", chat_stats["Total Rounds"])
+
 if st.session_state['data']:
     history = st.session_state['data']["chat_history"]
     tab1.markdown(show_messages(user, history))
