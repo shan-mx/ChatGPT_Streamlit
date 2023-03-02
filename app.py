@@ -7,10 +7,10 @@ st.set_page_config(page_title='GPT Assistant')
 st.title('GPT Assistant')
 
 tab1, tab2, tab3 = st.tabs(["Chat", "Settings", "Statistics"])
-api_key = tab2.text_input("OpenAI API Key")
 user = tab2.text_input("Username (each user have their own chat history)", value="User")
 initial_content = tab2.text_input("Initial Instruction (applies when the chat history is cleared)", "")
-tab2.write("Credit: shan-mx")
+api_key = tab2.text_input("OpenAI API Key")
+tab2.write("GUI bulit by shan-mx")
 
 if user or 'data' not in st.session_state:
     st.session_state['data'] = load_data(user, initial_content)
@@ -25,9 +25,8 @@ col2.metric("Total Tokens:", chat_stats["Total Tokens"])
 col3.metric("Total Rounds:", chat_stats["Total Rounds"])
 
 if st.session_state['data']:
-    history = st.session_state['data']["chat_history"]
-    tab1.markdown(show_messages(user, history))
-user_input = tab1.text_area(user + ":", key='input')
+    show_messages(user, st.session_state['data']["chat_history"], tab1)
+user_input = tab1.text_area(user + ":")
 if tab1.button("Submit", use_container_width=True):
     openai.api_key = api_key if api_key != "" else st.secrets["apikey"]
     chat_stats["Total Rounds"] += 1
@@ -37,14 +36,11 @@ if tab1.button("Submit", use_container_width=True):
         try:
             r = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=chat_history)
         except openai.error.APIConnectionError:
-            st.error("API Connection Error, try again.")
-            return_text = ""
+            return_text = "[Warning] API Connection Error, try again."
         except openai.error.InvalidRequestError:
-            st.error("Reached chat content limit, go Settings -> Clear Chat History.")
-            return_text = ""
+            return_text = "[Warning] Reached chat content limit, click 'Clear Chat History'."
         except openai.error.RateLimitError:
-            st.error("Reached chat rate limit, do not send request too frequently.")
-            return_text = ""
+            return_text = "[Warning] Reached chat rate limit, do not send request too frequently."
         else:
             return_text = r["choices"][0]["message"]["content"]
             chat_stats["Total Tokens"] += r["usage"]["total_tokens"]
