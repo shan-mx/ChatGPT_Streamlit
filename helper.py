@@ -11,7 +11,9 @@ def load_data(user: str, initial_content: str) -> dict:
         with open(f"chat_data{user}.json", 'r', encoding='utf-8') as f:
             data = json.load(f)
             return data
-    except json.decoder.JSONDecodeError or FileNotFoundError:
+    except FileNotFoundError:
+        return {"chat_history": [{"role": "system", "content": initial_content}], "chat_stats": initial_stats}
+    except json.decoder.JSONDecodeError:
         return {"chat_history": [{"role": "system", "content": initial_content}], "chat_stats": initial_stats}
 
 
