@@ -10,7 +10,7 @@ tab1, tab2, tab3 = st.tabs(["Chat", "Settings", "Statistics"])
 api_key = tab2.text_input("OpenAI API Key")
 user = tab2.text_input("Username (each user have their own chat history)", value="User")
 initial_content = tab2.text_input("Initial Instruction (applies when the chat history is cleared)", "")
-openai.api_key = api_key if api_key != "" else st.secrets["apikey"]
+tab2.write("Credit: shan-mx")
 
 if user or 'data' not in st.session_state:
     st.session_state['data'] = load_data(user, initial_content)
@@ -29,6 +29,7 @@ if st.session_state['data']:
     tab1.markdown(show_messages(user, history))
 user_input = tab1.text_area(user + ":", key='input')
 if tab1.button("Submit", use_container_width=True):
+    openai.api_key = api_key if api_key != "" else st.secrets["apikey"]
     chat_stats["Total Rounds"] += 1
     t1 = time.time()
     chat_history.append({"role": "user", "content": user_input})
