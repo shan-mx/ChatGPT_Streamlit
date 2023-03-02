@@ -3,13 +3,14 @@ from helper import *
 import streamlit as st
 import openai
 
-openai.api_key = local_api_key if local_api_key != "" else st.secrets["apikey"]
 st.set_page_config(page_title='GPT Assistant')
 st.title('GPT Assistant')
 
 tab1, tab2, tab3 = st.tabs(["Chat", "Settings", "Statistics"])
-initial_content = tab2.text_input("Initial Instruction (applies when the chat history is cleared)", "")
+api_key = tab2.text_input("OpenAI API Key")
 user = tab2.text_input("Username (each user have their own chat history)", value="User")
+initial_content = tab2.text_input("Initial Instruction (applies when the chat history is cleared)", "")
+openai.api_key = api_key if api_key != "" else st.secrets["apikey"]
 
 if user or 'data' not in st.session_state:
     st.session_state['data'] = load_data(user, initial_content)

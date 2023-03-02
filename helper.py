@@ -26,4 +26,3 @@ def show_messages(user: str, messages: list) -> str:
 
 
 initial_stats = {"Total Time": 0, "Total Tokens": 0, "Total Rounds": 0, "Time Used": 0, "Tokens Used": 0, "Averaged Time": 0}
-local_api_key = ""  # your own apikey here
