@@ -3,22 +3,19 @@ from helper import *
 import streamlit as st
 import openai
 
-openai.api_key = api_key1 + api_key2
-st.set_page_config(page_title='GPT Chatter')
-st.title('GPT Chatter')
+openai.api_key = local_api_key if local_api_key != "" else st.secrets["apikey"]
+st.set_page_config(page_title='GPT Assistant')
+st.title('GPT Assistant')
 
 tab1, tab2, tab3 = st.tabs(["Chat", "Settings", "Statistics"])
-initial_content = tab2.text_input("Initial Instruction", "")
-user = tab2.text_input("Username", value="User")
-if tab2.button("Clear Chat History"):
-    st.session_state['data']["chat_history"] = [{"role": "system", "content": initial_content}]
-    st.session_state['data']["chat_stats"] = initial_stats
-    save_data(st.session_state['data']["chat_history"], st.session_state['data']["chat_stats"], user)
-if user or initial_content or 'data' not in st.session_state:
-    st.session_state['data'] = load_data(user, initial_content)
+initial_content = tab2.text_input("Initial Instruction (applies when the chat history is cleared)", "")
+user = tab2.text_input("Username (each user have their own chat history)", value="User")
 
+if user or 'data' not in st.session_state:
+    st.session_state['data'] = load_data(user, initial_content)
 chat_stats = st.session_state['data']["chat_stats"]
 chat_history = st.session_state['data']["chat_history"]
+
 col1, col2, col3 = tab3.columns(3)
 col1.metric("Time Used:", chat_stats["Time Used"])
 col1.metric("Averaged Time:", chat_stats["Averaged Time"])
@@ -30,7 +27,7 @@ if st.session_state['data']:
     history = st.session_state['data']["chat_history"]
     tab1.markdown(show_messages(user, history))
 user_input = tab1.text_area(user + ":", key='input')
-if tab1.button("Submit"):
+if tab1.button("Submit", use_container_width=True):
     chat_stats["Total Rounds"] += 1
     t1 = time.time()
     chat_history.append({"role": "user", "content": user_input})
@@ -56,3 +53,8 @@ if tab1.button("Submit"):
         chat_stats["Averaged Time"] = round(chat_stats["Total Time"] / chat_stats["Total Rounds"], 3)
         save_data(chat_history, chat_stats, user)
         st.experimental_rerun()
+if tab1.button("Clear Chat History", use_container_width=True):
+    st.session_state['data']["chat_history"] = [{"role": "system", "content": initial_content}]
+    st.session_state['data']["chat_stats"] = initial_stats
+    save_data(st.session_state['data']["chat_history"], st.session_state['data']["chat_stats"], user)
+    st.experimental_rerun()

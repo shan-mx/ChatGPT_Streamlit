@@ -17,8 +17,7 @@ def load_data(user: str, initial_content: str) -> dict:
 
 def show_messages(user: str, messages: list) -> str:
     md_str = ""
-    for i in range(len(messages)):
-        each = messages[i]
+    for each in messages:
         if each["role"] == "user":
             md_str += f"**{user}:**\n\n{each['content']}\n***\n"
         if each["role"] == "assistant":
@@ -26,13 +25,5 @@ def show_messages(user: str, messages: list) -> str:
     return md_str
 
 
-api_key1 = "half of your apikey"
-api_key2 = "another half of the apikey"
-initial_stats = {
-    "Total Time": 0,
-    "Total Tokens": 0,
-    "Total Rounds": 0,
-    "Time Used": 0,
-    "Tokens Used": 0,
-    "Averaged Time": 0
-}
+initial_stats = {"Total Time": 0, "Total Tokens": 0, "Total Rounds": 0, "Time Used": 0, "Tokens Used": 0, "Averaged Time": 0}
+local_api_key = ""  # your own apikey here
