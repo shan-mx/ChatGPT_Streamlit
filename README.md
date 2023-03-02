@@ -1,3 +1,13 @@
 # ChatGPT_Streamlit
 A ChatGPT web client implementation based on streamlit.
-Enter your apikey in helper.py and streamlit app.py to simply deploy it.
+
+## Usage
+### Create ./.streamlit/secrets.toml then type
+`
+api_key = "YOUR_OPENAI_API_KEY"
+`
+
+### 2. Run the streamlit GUI
+```bash
+streamlit run app.py
+```
