@@ -26,6 +26,8 @@ def show_messages(user: str, messages: list):
             st.markdown(f"***\n**{user}:**\n\n{each['content']}")
         if each["role"] == "assistant":
             st.markdown(f"***\n**Assistant:**\n\n{each['content']}")
+        if each["role"] == "system" and each["content"] != "":
+            st.markdown(f"***\n**System:**\n\n{each['content']}")
     st.markdown("\n")
 
 

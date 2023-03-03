@@ -61,12 +61,14 @@ with st.expander("Settings"):
     if user_box and "rerun" in st.session_state:
         st.experimental_set_query_params(user=user_box)
         st.experimental_rerun()
-    if initial_content_box and "rerun" in st.session_state:
+    if initial_content_box:
         st.session_state["initial_content"] = initial_content_box
-        st.experimental_rerun()
-    if api_key_box and "rerun" in st.session_state:
+        if "rerun" in st.session_state:
+            st.experimental_rerun()
+    if api_key_box:
         st.session_state["api_key"] = api_key_box
-        st.experimental_rerun()
+        if "rerun" in st.session_state:
+            st.experimental_rerun()
     st.write("GUI bulit by shan-mx")
 
 with st.expander("Statistics"):
