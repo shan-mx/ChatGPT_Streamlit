@@ -13,10 +13,12 @@ else:
     st.session_state.pop("rerun")
 chat_stats = st.session_state['data']["chat_stats"]
 chat_history = st.session_state['data']["chat_history"]
+if user == "User":
+    st.markdown("***\nIt seems like you're new to my chatGPT web client! Please create your own user profile in Settings.\n\n")
 if st.session_state["data"]:
     show_messages(user, st.session_state['data']["chat_history"], st)
 with st.form("form", clear_on_submit=True):
-    user_input = st.text_area(f"**{user}:**", key="input", value="" if user != "User" else "Greetings! If it's your first time using my chatGPT web client, pls create your own user profile in Settings.")
+    user_input = st.text_area(f"**{user}:**", key="input")
     if st.form_submit_button("Submit", use_container_width=True):
         openai.api_key = api_key if api_key != "" else st.secrets["apikey"]
         chat_stats["Total Rounds"] += 1

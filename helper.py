@@ -25,9 +25,10 @@ def load_data(user: str, initial_content: str) -> dict:
 def show_messages(user: str, messages: list, st):
     for each in messages:
         if each["role"] == "user":
-            st.markdown(f"**{user}:**\n\n{each['content']}\n***\n")
+            st.markdown(f"***\n**{user}:**\n\n{each['content']}")
         if each["role"] == "assistant":
-            st.markdown(f"**Assistant:**\n\n{each['content']}\n***\n")
+            st.markdown(f"***\n**Assistant:**\n\n{each['content']}")
+    st.markdown("\n")
 
 
 initial_stats = {"Total Time": 0, "Total Tokens": 0, "Total Rounds": 0, "Time Used": 0, "Tokens Used": 0, "Averaged Time": 0}
