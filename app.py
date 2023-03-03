@@ -48,7 +48,11 @@ with st.expander("Settings"):
         st.session_state['data']["chat_stats"] = initial_stats
         save_data(st.session_state['data']["chat_history"], st.session_state['data']["chat_stats"], user)
         st.experimental_rerun()
-    user_box = st.text_input("Username (each user have their own chat data)", value=user) if user != "Admin" else st.selectbox("All Users", [json_file.split("_")[-1] for json_file in glob.glob(os.getcwd() + '/*.json')])
+    if user == "Admin":
+        users_list = [json_file.split("_")[-1].split(".")[0] for json_file in glob.glob(os.getcwd() + '/*.json')]
+        user_box = st.selectbox("All Users", users_list if "Admin" in users_list else ["Admin"] + users_list)
+    else:
+        user_box = st.text_input("Username (each user have their own chat data)", value=user)
     initial_content_box = st.text_input("Initial Instruction (applies when the chat history is cleared)", value=initial_content)
     api_key_box = st.text_input("OpenAI API Key (optional)", value=api_key)
     if user_box:
