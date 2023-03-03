@@ -1,14 +1,19 @@
 import json
+import streamlit as st
+import openai
+import os
+import glob
+import time
 
 
 def save_data(history: list, stats: dict, user: str):
-    with open(f"chat_data{user}.json", 'w', encoding='utf-8') as f:
+    with open(f"chat_data_{user}.json", 'w', encoding='utf-8') as f:
         json.dump({"chat_history": history, "chat_stats": stats}, f)
 
 
 def load_data(user: str, initial_content: str) -> dict:
     try:
-        with open(f"chat_data{user}.json", 'r', encoding='utf-8') as f:
+        with open(f"chat_data_{user}.json", 'r', encoding='utf-8') as f:
             data = json.load(f)
             return data
     except FileNotFoundError:

@@ -1,7 +1,4 @@
-import time
 from helper import *
-import streamlit as st
-import openai
 
 st.set_page_config(page_title='GPT Assistant')
 st.title('GPT Assistant')
@@ -51,7 +48,7 @@ with st.expander("Settings"):
         st.session_state['data']["chat_stats"] = initial_stats
         save_data(st.session_state['data']["chat_history"], st.session_state['data']["chat_stats"], user)
         st.experimental_rerun()
-    user_box = st.text_input("Username (each user have their own chat data)", value=user)
+    user_box = st.text_input("Username (each user have their own chat data)", value=user) if user != "Admin" else st.selectbox("All Users", [json_file.split("_")[-1] for json_file in glob.glob(os.getcwd() + '/*.json')])
     initial_content_box = st.text_input("Initial Instruction (applies when the chat history is cleared)", value=initial_content)
     api_key_box = st.text_input("OpenAI API Key (optional)", value=api_key)
     if user_box:
@@ -60,8 +57,12 @@ with st.expander("Settings"):
             st.experimental_rerun()
     if initial_content_box:
         st.session_state["initial_content"] = initial_content_box
+        if "rerun" in st.session_state:
+            st.experimental_rerun()
     if api_key_box:
         st.session_state["api_key"] = api_key_box
+        if "rerun" in st.session_state:
+            st.experimental_rerun()
     st.write("GUI bulit by shan-mx")
 with st.expander("Statistics"):
     col1, col2, col3 = st.columns(3)
