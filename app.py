@@ -16,7 +16,7 @@ chat_history = st.session_state['data']["chat_history"]
 if st.session_state["data"]:
     show_messages(user, st.session_state['data']["chat_history"], st)
 with st.form("form", clear_on_submit=True):
-    user_input = st.text_area(f"**{user}:**", key="input")
+    user_input = st.text_area(f"**{user}:**", key="input", value="" if user != "User" else "Greetings! If it's your first time using my chatGPT web client, pls create your own user profile in Settings.")
     if st.form_submit_button("Submit", use_container_width=True):
         openai.api_key = api_key if api_key != "" else st.secrets["apikey"]
         chat_stats["Total Rounds"] += 1
