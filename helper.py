@@ -22,13 +22,14 @@ def load_data(user: str, initial_content: str) -> dict:
 
 def show_messages(user: str, messages: list):
     for each in messages:
-        st.write(each['content'].replace('\n', '[line]'))
+
         if each["role"] == "user":
             st.markdown(f"***\n**{user}:**\n\n{each['content']}")
         if each["role"] == "assistant":
             st.markdown(f"***\n**Assistant:**\n\n{each['content']}")
         if each["role"] == "system" and each["content"] != "":
             st.markdown(f"***\n**System:**\n\n{each['content']}")
+        st.write([each['content'].replace('\n', '[line]')])
 
 
 def initial_data(initial_content: str):
