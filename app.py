@@ -27,7 +27,6 @@ if "r" in st.session_state and debug:
         if "content" in e["choices"][0]["delta"]:
             report += e["choices"][0]["delta"]["content"] #.replace('\n', '\n\n')
             area.markdown("***\n**Assistant:**\n\n" + report)
-    st.write([report])
     history.append({"role": "assistant", "content": report})
     save_data(history, stats, paras, user)
     st.session_state.pop("r")
