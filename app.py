@@ -12,7 +12,10 @@ else:
     st.session_state.pop("rerun")
 if "data" not in st.session_state:
     st.session_state['data'] = load_data(user, initial_content)
-history, paras = (value for key, value in st.session_state['data'].items())
+try:
+    history, paras = (value for key, value in st.session_state['data'].items())
+except:
+    history, stats, paras = (value for key, value in st.session_state['data'].items())
 save_data(history, paras, user)
 
 if user == "User":
