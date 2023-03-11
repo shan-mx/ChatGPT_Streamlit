@@ -8,7 +8,6 @@ api_key = "" if "api_key" not in st.session_state else st.session_state["api_key
 i = ""
 if "rerun" not in st.session_state:
     st.session_state["rerun"] = True
-
 else:
     st.session_state.pop("rerun")
 if "data" not in st.session_state:
@@ -23,12 +22,12 @@ if user == "User":
 debug = 1
 show_messages(user, st.session_state['data']["history"])
 if "r" in st.session_state and debug:
-    report = "***\n**Assistant:**\n\n"
+    report = ""
     res_box = st.empty()
     for e in st.session_state["r"]:
         if "content" in e["choices"][0]["delta"]:
             report += e["choices"][0]["delta"]["content"].replace('\n', '\n\n')
-            res_box.markdown(report + "\n\n")
+            res_box.markdown("***\n**Assistant:**\n\n" + report + "\n\n")
     history.append({"role": "assistant", "content": report})
     save_data(history, stats, paras, user)
     st.session_state.pop("r")
@@ -52,7 +51,7 @@ with st.form("form", clear_on_submit=True):
                 return_text = "[Warning] Reached chat rate limit, do not send request too frequently."
             else:
                 st.session_state["r"] = r
-                return_text = "" #r["choices"][0]["message"]["content"]
+                #return_text = r["choices"][0]["message"]["content"]
                 #stats["Total Tokens"] += r["usage"]["total_tokens"]
                 #stats["Tokens Used"] = r["usage"]["total_tokens"]
             #stats["Time Used"] = round(time.time() - t1, 3)
