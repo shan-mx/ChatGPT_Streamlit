@@ -27,7 +27,7 @@ if "r" in st.session_state and debug:
     for e in st.session_state["r"]:
         if "content" in e["choices"][0]["delta"]:
             report += e["choices"][0]["delta"]["content"] #.replace('\n', '\n\n')
-            msg.markdown("***\n**Assistant:**\n\n" + report + "\n\n\n\n")
+            msg.markdown("***\n**Assistant:**\n\n" + report)
     history.append({"role": "assistant", "content": report})
     save_data(history, stats, paras, user)
     st.session_state.pop("r")
@@ -39,7 +39,7 @@ with st.form("form", clear_on_submit=True):
         openai.api_key = api_key if api_key != "" else st.secrets["apikey"]
         stats["Total Rounds"] += 1
         t1 = time.time()
-        history.append({"role": "user", "content": user_input.replace('\n', '\n\n')[:-1]})
+        history.append({"role": "user", "content": user_input})
         with st.spinner("Processing..."):
             try:
                 r = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=history, stream=True, **paras)
@@ -76,7 +76,7 @@ with st.expander("Settings"):
         st.experimental_set_query_params(user=user_box)
         st.experimental_rerun()
     if initial_content_box:
-        st.session_state["initial_content"] = initial_content_box.replace('\n', '\n\n')[:-1]
+        st.session_state["initial_content"] = initial_content_box.replace('\n', '\n\n')
         if "rerun" in st.session_state:
             st.experimental_rerun()
     if api_key_box:
