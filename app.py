@@ -24,7 +24,7 @@ debug = 1
 show_messages(user, st.session_state['data']["history"])
 if "r" in st.session_state and debug:
     #report = "***\n**Assistant:**\n\n"
-    repost = ""
+    report = ""
     res_box = st.empty()
     for e in st.session_state["r"]:
         if "content" in e["choices"][0]["delta"]:
