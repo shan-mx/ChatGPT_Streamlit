@@ -13,7 +13,6 @@ else:
 if "data" not in st.session_state:
     st.session_state['data'] = load_data(user, initial_content)
 history, stats, paras = (value for key, value in st.session_state['data'].items())
-print(paras)
 save_data(history, stats, paras, user)
 
 if user == "User":
@@ -23,11 +22,12 @@ debug = 1
 show_messages(user, st.session_state['data']["history"])
 if "r" in st.session_state and debug:
     report = ""
-    msg = st.empty()
+    area = st.empty()
     for e in st.session_state["r"]:
         if "content" in e["choices"][0]["delta"]:
             report += e["choices"][0]["delta"]["content"] #.replace('\n', '\n\n')
-            msg.markdown("***\n**Assistant:**\n\n" + report)
+            area.markdown("***\n**Assistant:**\n\n" + report)
+    st.write([report])
     history.append({"role": "assistant", "content": report})
     save_data(history, stats, paras, user)
     st.session_state.pop("r")
@@ -39,7 +39,7 @@ with st.form("form", clear_on_submit=True):
         openai.api_key = api_key if api_key != "" else st.secrets["apikey"]
         stats["Total Rounds"] += 1
         t1 = time.time()
-        history.append({"role": "user", "content": user_input})
+        history.append({"role": "user", "content": user_input.replace('\n', '\n\n')})
         with st.spinner("Processing..."):
             try:
                 r = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=history, stream=True, **paras)
