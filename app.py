@@ -23,19 +23,16 @@ if user == "User":
 debug = 1
 show_messages(user, st.session_state['data']["history"])
 if "r" in st.session_state and debug:
-    #report = "***\n**Assistant:**\n\n"
-    report = ""
+    report = "***\n**Assistant:**\n\n"
     res_box = st.empty()
     for e in st.session_state["r"]:
         if "content" in e["choices"][0]["delta"]:
             report += e["choices"][0]["delta"]["content"].replace('\n', '\n\n')
-            res_box.markdown(report)
-    history.append({"role": "assistant", "content": report + "\n\n"})
+            res_box.markdown(report + "\n\n")
+    history.append({"role": "assistant", "content": report})
     save_data(history, stats, paras, user)
     st.session_state.pop("r")
 
-#user_input = st.text_area(f"**{user}:**", key="input", value=i)
-#if 1 == 1:
 with st.form("form", clear_on_submit=True):
     user_input = st.text_area(f"**{user}:**", key="input")
     b = st.form_submit_button("Submit", use_container_width=True)
