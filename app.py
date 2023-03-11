@@ -23,10 +23,11 @@ debug = 1
 show_messages(user, st.session_state['data']["history"])
 if "r" in st.session_state and debug:
     report = ""
+    msg = st.empty()
     for e in st.session_state["r"]:
         if "content" in e["choices"][0]["delta"]:
             report += e["choices"][0]["delta"]["content"] #.replace('\n', '\n\n')
-            st.markdown("***\n**Assistant:**\n\n" + report + "\n\n\n\n")
+            msg.markdown("***\n**Assistant:**\n\n" + report + "\n\n\n\n")
     history.append({"role": "assistant", "content": report})
     save_data(history, stats, paras, user)
     st.session_state.pop("r")
