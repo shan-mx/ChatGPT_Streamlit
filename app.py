@@ -23,11 +23,10 @@ debug = 1
 show_messages(user, st.session_state['data']["history"])
 if "r" in st.session_state and debug:
     report = ""
-    res_box = st.empty()
     for e in st.session_state["r"]:
         if "content" in e["choices"][0]["delta"]:
-            report += e["choices"][0]["delta"]["content"].replace('\n', '\n\n')
-            res_box.markdown("***\n**Assistant:**\n\n" + report + "\n\n")
+            report += e["choices"][0]["delta"]["content"] #.replace('\n', '\n\n')
+            st.markdown("***\n**Assistant:**\n\n" + report + "\n\n\n\n")
     history.append({"role": "assistant", "content": report})
     save_data(history, stats, paras, user)
     st.session_state.pop("r")
@@ -76,7 +75,7 @@ with st.expander("Settings"):
         st.experimental_set_query_params(user=user_box)
         st.experimental_rerun()
     if initial_content_box:
-        st.session_state["initial_content"] = initial_content_box
+        st.session_state["initial_content"] = initial_content_box.replace('\n', '\n\n')
         if "rerun" in st.session_state:
             st.experimental_rerun()
     if api_key_box:
